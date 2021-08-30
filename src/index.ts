@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import { Packer } from './packer'
 import path from 'path'
-import ApiError from './error'
+import APIException from './error'
 import { fileExists } from './utils/validation'
 
 const app = express()
@@ -16,16 +16,16 @@ app.get('/packer', async (req: Request, res: Response) => {
     const isQueryProvided = JSON.stringify(req.query) !== JSON.stringify({})
 
     if (!(isQueryProvided && req.query.filePath)) {
-      throw new ApiError(400, 'Please provide a valid file')
+      throw new APIException(400, 'Please provide a valid file')
     }
     const filePath = path.join(process.cwd(), req.query.filePath as string)
 
     if (!fileExists(filePath)) {
-      throw new ApiError(400, 'Please provide a valid file')
+      throw new APIException(400, 'Please provide a valid file')
     }
     const result = await Packer.pack(filePath)
     res.json(result)
-  } catch (error) {
+  } catch (error:any) {
     res.json({
       statusCode: error.statusCode,
       message: error.message

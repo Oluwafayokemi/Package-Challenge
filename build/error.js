@@ -14,10 +14,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var ApiError = /** @class */ (function (_super) {
-    __extends(ApiError, _super);
-    function ApiError() {
-        return _super !== null && _super.apply(this, arguments) || this;
+Object.defineProperty(exports, "__esModule", { value: true });
+var APIException = /** @class */ (function (_super) {
+    __extends(APIException, _super);
+    function APIException(statusCode, message) {
+        var _this = _super.call(this, message) || this;
+        _this.statusCode = statusCode;
+        _this.statusCode = statusCode;
+        return _this;
     }
-    return ApiError;
+    return APIException;
 }(Error));
+exports.default = APIException;

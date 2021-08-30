@@ -39,47 +39,66 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var packer_1 = require("./packer");
-var path_1 = __importDefault(require("path"));
-var error_1 = __importDefault(require("./error"));
-var validation_1 = require("./utils/validation");
-var app = (0, express_1.default)();
-var port = 8080;
-app.get('/', function (req, res) {
-    res.json('Hello world!');
-});
-app.get('/packer', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var isQueryProvided, filePath, result, error_2;
+exports.processLineByLine = void 0;
+var fs_1 = __importDefault(require("fs"));
+var readline_1 = __importDefault(require("readline"));
+var events_1 = require("events");
+var parseFile = function (file) {
+    if (!file || JSON.stringify(file) === JSON.stringify({})) {
+        return null;
+    }
+    return Object.entries(file).map(function (newEntry) {
+        return {
+            maxWeight: JSON.parse(newEntry[0]).maxWeight,
+            items: newEntry[1].map(function (entry) {
+                return {
+                    index: entry[0],
+                    weight: entry[1],
+                    price: entry[2]
+                };
+            })
+        };
+    });
+};
+var processLineByLine = function (inputFile) { return __awaiter(void 0, void 0, void 0, function () {
+    var file, readLine, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                isQueryProvided = JSON.stringify(req.query) !== JSON.stringify({});
-                if (!(isQueryProvided && req.query.filePath)) {
-                    throw new error_1.default(400, 'Please provide a valid file');
-                }
-                filePath = path_1.default.join(process.cwd(), req.query.filePath);
-                if (!(0, validation_1.fileExists)(filePath)) {
-                    throw new error_1.default(400, 'Please provide a valid file');
-                }
-                return [4 /*yield*/, packer_1.Packer.pack(filePath)];
+                file = {};
+                _a.label = 1;
             case 1:
-                result = _a.sent();
-                res.json(result);
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _a.sent();
-                res.json({
-                    statusCode: error_2.statusCode,
-                    message: error_2.message
+                _a.trys.push([1, 3, , 4]);
+                readLine = readline_1.default.createInterface({
+                    input: fs_1.default.createReadStream(inputFile),
+                    crlfDelay: Infinity
                 });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                readLine.on('line', function (line) {
+                    if (!line.split(':')[1]) {
+                        return null;
+                    }
+                    var key = line
+                        .split(':')[0]
+                        .trim()
+                        .replace(/^/, '{"maxWeight" : ') + " }";
+                    var value = line
+                        .split(':')[1]
+                        .trim()
+                        .replace(/\(/g, '[')
+                        .replace(/\)/g, '],')
+                        .replace(/\€/g, '');
+                    var parsedValue = value.substring(0, value.length - 1);
+                    file[key] = JSON.parse('[' + parsedValue + ']');
+                });
+                return [4 /*yield*/, (0, events_1.once)(readLine, 'close')];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, parseFile(file)];
+            case 3:
+                error_1 = _a.sent();
+                return [2 /*return*/, error_1];
+            case 4: return [2 /*return*/];
         }
     });
-}); });
-app.listen(port, function () {
-    console.log("server started at http://localhost:" + port);
-});
-exports.default = app;
+}); };
+exports.processLineByLine = processLineByLine;

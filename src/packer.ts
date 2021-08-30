@@ -1,21 +1,27 @@
 import { processLineByLine } from '../src/utils/readLine'
-import ApiError from './error'
+import APIException from './error'
 
 export class Packer {
   public static async pack (inputFile: string): Promise<any> {
     try {
-      const fileData = await processLineByLine(inputFile)
+      const fileData: any = await processLineByLine(inputFile)
       const result: any = []
+      
       if (!fileData || JSON.stringify(fileData) === JSON.stringify({})) {
-        throw new ApiError(400, 'invalid data')
+        throw new APIException(400, 'invalid data')
       }
 
+      // parses output as a string
       const parseOutput = (output: any) => {
         const trimOutput = output.filter((item: string) => item)
-        return trimOutput.join('\r\n')
+        return trimOutput
+          .join('\r\n')
+          .split(' ')
+          .join('')
       }
 
-      const getSumPairs = (items: any, maxWeight: string) => {
+      // get sum of packages less than maxWeight and also return individual packages
+      const getPackagesSum = (items: any, maxWeight: string) => {
         var len = items.length
         let sets: any = {}
         for (var i = 0; i < len - 1; i++) {
@@ -40,15 +46,17 @@ export class Packer {
         return sets
       }
 
-      const getSelectedPackages = ({ items }: any) => {
+      const getSelectedPackages = (items: any) => {
         const values = Object.values(items)
+        // get package with highest price
         const max = values.reduce((prev: any, current: any) => {
           return prev.sumPrice > current.sumPrice ? prev : current
         }, 0)
         return max
       }
 
-      const getAppropriatePackageIndex = () => {
+      // Main function that returns the selected packages
+      const selectValidPackagesByWeightAndPrice = () => {
         let packageItems: any = []
 
         // remove any weight of items greater than the maxWeight or item price is greater than 100
@@ -64,30 +72,31 @@ export class Packer {
 
         // Do logic for packages with single and multiple items resp.
         packageItems = packageItems.map(({ maxWeight, items }: any) => {
-          // Return when maxWeight is greater than 100
+          // returns "_" when maxWeight is greater than 100
           if (maxWeight > 100) {
             return result.push('_')
           }
-
+          // returns "_" when no items in the package
+          if (!items.length) {
+            return result.push('_')
+          }
+          // returns the first index for packages with only one item
           if (items.length === 1) {
             result.push(items[0].index)
           }
-
+          // items with multiple packages
           if (items.length >= 1) {
-            const sumPair = getSumPairs(items, maxWeight)
-            const sumPackages = { maxWeight, items: sumPair }
-            const newPackage: any = getSelectedPackages(sumPackages)
-            result.push(newPackage.indexes)
-          }
-
-          if (!items.length) {
-            result.push('_')
+            const packagesSum = getPackagesSum(items, maxWeight)
+            const { indexes }: any = getSelectedPackages(packagesSum)
+            result.push(indexes)
           }
         })
       }
-      getAppropriatePackageIndex()
-      return parseOutput(result).split(' ').join('')
-    } catch (error) {
+      // calls the function to get appropriate packages
+      selectValidPackagesByWeightAndPrice()
+
+      return parseOutput(result)
+    } catch (error:any) {
       return {
         statusCode: error.statusCode,
         message: error.message

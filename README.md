@@ -4,6 +4,7 @@
 
 ## Development process
 - Test driven development(Tdd) was used
+- Qaudratic - O(a*b) time complexity (can be improved greatly)
 
 ## Code Stragtegy/Algorithm
 * Validates that req.query exists and the file path is valid

@@ -1,0 +1,42 @@
+{
+  "name": "mobiquity-test",
+  "version": "1.0.0",
+  "description": "Package Challenge",
+  "main": "index.ts",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai-http": "^4.3.0",
+    "express": "^4.17.1",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.7.2",
+    "@types/express": "^4.17.2",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.0",
+    "nodemon": "^2.0.12",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.2.1"
+  },
+  "scripts": {
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
+    "start": "npm run build && node build/index.js",
+    "start:dev": "nodemon",
+    "build": "rimraf ./build && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oluwafayokemi/mobiquity-test.git"
+  },
+  "author": "fayokemi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Oluwafayokemi/mobiquity-test/issues"
+  },
+  "homepage": "https://github.com/Oluwafayokemi/mobiquity-test#readme"
+}

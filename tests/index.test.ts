@@ -16,7 +16,7 @@ describe('/Index', () => {
   })
 
   describe('Error', () => {
-    it('When no value is passed to req.query should throw an error', done => {
+    it('should throw an error when no value is passed to req.query', done => {
       chai
         .request('http://localhost:8080')
         .get('/packer')
@@ -27,7 +27,7 @@ describe('/Index', () => {
         })
     })
 
-    it('When no value is passed to req.query.filePath should throw an error', done => {
+    it('should throw an error when no value is passed to req.query.filePath', done => {
       chai
         .request('http://localhost:8080')
         .get('/packer?filePath=')
@@ -38,7 +38,7 @@ describe('/Index', () => {
         })
     })
 
-    it('When an empty string is passed to req.query.filePath should throw an error', done => {
+    it('should throw an error when an empty string is passed to req.query.filePath', done => {
       chai
         .request('http://localhost:8080')
         .get('/packer?filePath=invalid_path')

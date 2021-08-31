@@ -31,12 +31,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Oluwafayokemi/mobiquity-test.git"
+    "url": "git+https://github.com/Oluwafayokemi/package-challenge.git"
   },
   "author": "fayokemi",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Oluwafayokemi/mobiquity-test/issues"
+    "url": "https://github.com/Oluwafayokemi/package-challenge/issues"
   },
-  "homepage": "https://github.com/Oluwafayokemi/mobiquity-test#readme"
+  "homepage": "https://github.com/Oluwafayokemi/package-challenge#readme"
 }

@@ -5,14 +5,14 @@ export class Packer {
   public static async pack (inputFile: string): Promise<any> {
     try {
       const fileData: any = await processLineByLine(inputFile)
-      const result: any = []
-      
+      const result: any[] = []
+
       if (!fileData || JSON.stringify(fileData) === JSON.stringify({})) {
         throw new APIException(400, 'invalid data')
       }
 
       // parses output as a string
-      const parseOutput = (output: any) => {
+      const parseOutput = (output: any[]) => {
         const trimOutput = output.filter((item: string) => item)
         return trimOutput
           .join('\r\n')
@@ -21,7 +21,7 @@ export class Packer {
       }
 
       // get sum of packages less than maxWeight and also return individual packages
-      const getPackagesSum = (items: any, maxWeight: string) => {
+      const getPackagesSum = (items: any[], maxWeight: string) => {
         var len = items.length
         let sets: any = {}
         for (var i = 0; i < len - 1; i++) {
@@ -55,12 +55,9 @@ export class Packer {
         return max
       }
 
-      // Main function that returns the selected packages
-      const selectValidPackagesByWeightAndPrice = () => {
-        let packageItems: any = []
-
-        // remove any weight of items greater than the maxWeight or item price is greater than 100
-        packageItems = fileData.map((packages: any) => {
+      const filterByWeightAndCost = () => {
+        // Removes any weight of items greater than the maxWeight or item price is greater than 100
+        return fileData.map((packages: any) => {
           const { maxWeight, items } = packages
           return {
             maxWeight,
@@ -69,9 +66,13 @@ export class Packer {
             )
           }
         })
+      }
 
-        // Do logic for packages with single and multiple items resp.
-        packageItems = packageItems.map(({ maxWeight, items }: any) => {
+      // Main function that returns the selected packages
+      const selectValidPackagesByWeightAndPrice = () => {
+        const packages: any[] = filterByWeightAndCost()
+        // logic for packages with single and multiple items resp.
+        packages.map(({ maxWeight, items }: any) => {
           // returns "_" when maxWeight is greater than 100
           if (maxWeight > 100) {
             return result.push('_')

@@ -47,7 +47,7 @@ var Packer = /** @class */ (function () {
     }
     Packer.pack = function (inputFile) {
         return __awaiter(this, void 0, void 0, function () {
-            var fileData_1, result_1, parseOutput, getPackagesSum_1, getSelectedPackages_1, selectValidPackagesByWeightAndPrice, error_2;
+            var fileData_1, result_1, parseOutput, getPackagesSum_1, getSelectedPackages_1, filterByWeightAndCost_1, selectValidPackagesByWeightAndPrice, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -98,18 +98,20 @@ var Packer = /** @class */ (function () {
                             }, 0);
                             return max;
                         };
-                        selectValidPackagesByWeightAndPrice = function () {
-                            var packageItems = [];
-                            // remove any weight of items greater than the maxWeight or item price is greater than 100
-                            packageItems = fileData_1.map(function (packages) {
+                        filterByWeightAndCost_1 = function () {
+                            // Removes any weight of items greater than the maxWeight or item price is greater than 100
+                            return fileData_1.map(function (packages) {
                                 var maxWeight = packages.maxWeight, items = packages.items;
                                 return {
                                     maxWeight: maxWeight,
                                     items: items.filter(function (item) { return item.weight < maxWeight && item.price < 100; })
                                 };
                             });
-                            // Do logic for packages with single and multiple items resp.
-                            packageItems = packageItems.map(function (_a) {
+                        };
+                        selectValidPackagesByWeightAndPrice = function () {
+                            var packages = filterByWeightAndCost_1();
+                            // logic for packages with single and multiple items resp.
+                            packages.map(function (_a) {
                                 var maxWeight = _a.maxWeight, items = _a.items;
                                 // returns "_" when maxWeight is greater than 100
                                 if (maxWeight > 100) {

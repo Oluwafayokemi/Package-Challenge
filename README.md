@@ -91,3 +91,23 @@ const package = [
 ]
 
 ```
+## Get Started
+$ git clone `git@github.com:Oluwafayokemi/Package-Challenge.git`
+
+## Set up Guide
+- cd into the newly cloned folder
+- on your terminal run
+```
+npm install 
+```
+To install all packages
+```
+npm run start:dev 
+```
+
+To test 
+```
+npm test
+ ```
+## Example Reqeusts
+- `GET` http://localhost:8080/packer?filePath=resources/example_input

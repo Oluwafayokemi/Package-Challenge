@@ -25,17 +25,16 @@ You would prefer to send a package which weighs less in case there is more than 
 $ git clone `git@github.com:Oluwafayokemi/Package-Challenge.git`
 
 ## Set up Guide
-- cd into the newly cloned folder
-- on your terminal run
+
+To install all packages
 ```
 npm install 
 ```
-To install all packages
+To start dev
 ```
 npm run start:dev 
 ```
-
-To test 
+To test (run start:dev before run test)
 ```
 npm test
  ```

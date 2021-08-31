@@ -21,6 +21,27 @@ You would prefer to send a package which weighs less in case there is more than 
 8,9
 ```
 
+## Get Started
+$ git clone `git@github.com:Oluwafayokemi/Package-Challenge.git`
+
+## Set up Guide
+- cd into the newly cloned folder
+- on your terminal run
+```
+npm install 
+```
+To install all packages
+```
+npm run start:dev 
+```
+
+To test 
+```
+npm test
+ ```
+## Example Reqeusts
+- `GET` http://localhost:8080/packer?filePath=resources/example_input
+
 ## Development process
 - Test driven development(Tdd) is used
 - Qaudratic - O(a*b) time complexity
@@ -91,23 +112,3 @@ const package = [
 ]
 
 ```
-## Get Started
-$ git clone `git@github.com:Oluwafayokemi/Package-Challenge.git`
-
-## Set up Guide
-- cd into the newly cloned folder
-- on your terminal run
-```
-npm install 
-```
-To install all packages
-```
-npm run start:dev 
-```
-
-To test 
-```
-npm test
- ```
-## Example Reqeusts
-- `GET` http://localhost:8080/packer?filePath=resources/example_input

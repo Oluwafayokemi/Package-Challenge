@@ -34,7 +34,7 @@ To start dev
 ```
 npm run start:dev 
 ```
-To test (run start:dev before run test)
+To test (run start:dev asynchronously with run test)
 ```
 npm test
  ```

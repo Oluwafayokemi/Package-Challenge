@@ -6,7 +6,6 @@ export class Packer {
     try {
       const fileData: any = await processLineByLine(inputFile)
       const result: any[] = []
-
       if (!fileData || JSON.stringify(fileData) === JSON.stringify({})) {
         throw new APIException(400, 'invalid data')
       }
